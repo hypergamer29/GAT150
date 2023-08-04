@@ -5,6 +5,9 @@
       <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
       <Extensions>cpp;c;cc;cxx;c++;cppm;ixx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
     </Filter>
+    <Filter Include="Source\Resource">
+      <UniqueIdentifier>{47a8f724-061f-4bfc-a05f-845f1abc8626}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Actor.cpp">
@@ -15,6 +18,9 @@
     </ClCompile>
     <ClCompile Include="Emitter.cpp">
       <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="Resource\RecourceManager.cpp">
+      <Filter>Source\Resource</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -29,6 +35,12 @@
     </ClInclude>
     <ClInclude Include="Emitter.h">
       <Filter>Source</Filter>
+    </ClInclude>
+    <ClInclude Include="Resource\Resource.h">
+      <Filter>Source\Resource</Filter>
+    </ClInclude>
+    <ClInclude Include="Resource\RecourceManager.h">
+      <Filter>Source\Resource</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

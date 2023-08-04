@@ -26,9 +26,12 @@ namespace Loki {
 		const int GetWidth() { return m_width; }
 		const int GetHeight() { return m_height; }
 
+		void DrawTexture(class Texture* textrue, float x, float y, float angle = 0.0f);
+
 		SDL_Renderer* m_renderer = nullptr;
 
 		friend class Text;
+		friend class Texture;
 
 	private: 
 		int m_height = 0;

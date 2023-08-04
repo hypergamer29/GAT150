@@ -13,7 +13,11 @@ namespace Loki {
 
 	}
 
-	void Font::Load(const std::string& filename, int fontSize) {
+	bool Font::Load(const std::string& filename, int fontSize) {
 		m_ttfFont = TTF_OpenFont(filename.c_str(), fontSize);
+	}
+
+	bool Font::Create(std::string filename, ...) {
+		return false;
 	}
 }
