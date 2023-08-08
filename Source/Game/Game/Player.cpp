@@ -3,6 +3,11 @@
 #include "Framework/Scene.h"
 #include "Input/InputSystem.h"
 #include "Audio/AudioSystem.h"
+#include "Framework/Components/SpriteComponent.h"
+#include "Framework/Resource/RecourceManager.h"
+#include "Renderer/Texture.h"
+#include "Renderer/Renderer.h"
+#include "Framework/Components/PhysicsComponent.h"
 
 void Player::Update(float dt) {
 	Actor::Update(dt);
@@ -18,7 +23,9 @@ void Player::Update(float dt) {
 	if (Loki::g_inputSystem.GetKeyDown(SDL_SCANCODE_W)) thrust = 1;
 
 	Loki::vec2 forward = Loki::vec2{ 0, -1 }.Rotate(m_transform.rotation);
-	AddForce(forward * m_speed * thrust);
+
+	auto physicsomponent = GetComponent<Loki::PhysicsComponent>();
+	physicsomponent->ApplyForce(forward * m_speed * thrust);
 	
 	//m_transform.position += forward * m_speed * thrust * Loki::g_time.GetDeltaTime();
 	
@@ -31,13 +38,23 @@ void Player::Update(float dt) {
 
 		//create pew
 		Loki::Transform transform1(m_transform.position, m_transform.rotation, 0.5f);
-		std::unique_ptr<Pew> pew = std::make_unique<Pew>(400.0f, transform1, m_model);
+		std::unique_ptr<Pew> pew = std::make_unique<Pew>(400.0f, transform1);
 		pew->m_tag = "PlayerBullet";
+
+		std::unique_ptr<Loki::SpriteComponent> component = std::make_unique<Loki::SpriteComponent>();
+		component->m_texture = Loki::g_resources.Get<Loki::Texture>("pew.png", Loki::g_renderer);
+		pew->AddComponent(std::move(component));
+		
 		m_scene->Add(std::move(pew));
  		Loki::g_audioSystem.PlayOneShot("Pew");
 		
 		Loki::Transform transform2(m_transform.position, m_transform.rotation - Loki::DegToRad(10.0f), 0.5f);
 		pew = std::make_unique<Pew>(400.0f, transform2, m_model);
+
+		std::unique_ptr<Loki::SpriteComponent> component = std::make_unique<Loki::SpriteComponent>();
+		component->m_texture = Loki::g_resources.Get<Loki::Texture>("pew.png", Loki::g_renderer);
+		pew->AddComponent(std::move(component));
+
 		pew->m_tag = "PlayerBullet";
 		m_scene->Add(std::move(pew));
 	}

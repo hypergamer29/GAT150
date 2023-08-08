@@ -4,8 +4,8 @@
 class Player : public Loki::Actor {
 public:
 	Player() = default;
-	Player(float speed, float turnRate, const Loki::Transform& transform, std::shared_ptr<Loki::Model> model) :
-		Actor{ transform, model },
+	Player(float speed, float turnRate, const Loki::Transform& transform) :
+		Actor{ transform },
 		m_speed{ speed },
 		m_turnRate{ turnRate }
 	{};

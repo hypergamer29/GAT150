@@ -4,8 +4,8 @@
 class Enemy : public Loki::Actor {
 public:
 	Enemy() = default;
-	Enemy(float speed, float turnRate, const Loki::Transform& transform, std::shared_ptr<Loki::Model> model) :
-		Actor{ transform, model },
+	Enemy(float speed, float turnRate, const Loki::Transform& transform) :
+		Actor{ transform },
 		m_speed{ speed },
 		m_turnRate{ turnRate }
 	{

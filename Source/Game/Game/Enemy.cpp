@@ -37,7 +37,7 @@ void Enemy::Update(float dt) {
 	if (m_fireTimer <= 0.0f) {
 		//create pew
 		Loki::Transform transform1(m_transform.position, m_transform.rotation + Loki::DegToRad(10.0f), 0.5f);
-		std::unique_ptr<Pew> pew = std::make_unique<Pew>(400.0f, transform1, m_model);
+		std::unique_ptr<Pew> pew = std::make_unique<Pew>(400.0f, transform1);
 		pew->m_tag = "EnemyBullet";
 		m_scene->Add(std::move(pew));
 		m_fireTimer = 5.0f;

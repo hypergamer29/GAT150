@@ -4,8 +4,8 @@
 class Pew : public Loki::Actor {
 public:
 	Pew() = default;
-	Pew(float speed, const Loki::Transform& transform, std::shared_ptr<Loki::Model> model) :
-		Actor{ transform, model },
+	Pew(float speed, const Loki::Transform& transform) :
+		Actor{ transform },
 		m_speed{ speed }
 	{ m_lifespan = 2.0f; }
 

@@ -69,8 +69,6 @@ int main(int argc, char* argv[]) {
 	Loki::SpaceGame game;
 	game.Initialize();
 
-
-
 	//stars
 	vector<Star> stars;
 	for (int i = 0; i < 300; i++) {
@@ -79,8 +77,6 @@ int main(int argc, char* argv[]) {
 
 		stars.push_back(Star(pos, vel));
 	}
-
-	Loki::res_t<Loki::Texture> texture = Loki::g_resources.Get<Loki::Texture>("ship.png", Loki::g_renderer);
 
 	// main game loop
 	bool quit = false;
@@ -112,8 +108,6 @@ int main(int argc, char* argv[]) {
 		//Draw game
 		game.Draw(Loki::g_renderer);
 		Loki::g_particleSystem.Draw(Loki::g_renderer);
-
-		Loki::g_renderer.DrawTexture(texture.get(), 200.0f, 200.0f, 0.0f);
 
 		Loki::g_renderer.EndFrame();
 	}

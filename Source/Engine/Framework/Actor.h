@@ -1,16 +1,13 @@
 #pragma once
 #include "Core/Core.h"
 #include "Renderer/Moedel.h"
+#include "Components/Components.h"
 #include <memory>
 
 namespace Loki {
 	class Actor {
 	public:
 		Actor() = default;
-		Actor(const Loki::Transform& transform, std::shared_ptr<Model> model) :
-			m_transform{ transform },
-			m_model{ model }
-		{}
 
 		Actor(const Loki::Transform& transform) :
 			m_transform{ transform }
@@ -19,11 +16,12 @@ namespace Loki {
 		virtual void Update(float dt);
 		virtual void Draw(Loki::Renderer& renderer);
 
-		float GetRadius() { return (m_model) ? m_model->GetRadius() * m_transform.scale : 0; }
-		virtual void OnCollision(Actor* other) {}
+		void AddComponent(std::unique_ptr<Components> component);
+		template<typename T>
+		T* GetComponent();
 
-		void AddForce(const vec2 force) { m_velocity += force; }
-		void SetDamping(float damping) { m_damping = damping; }
+		float GetRadius() { return 30.0f; }
+		virtual void OnCollision(Actor* other) {}
 
 		class Scene* m_scene = nullptr;
 		friend class Scene;
@@ -37,11 +35,19 @@ namespace Loki {
 		class Game* m_game = nullptr;
 
 	protected:
+		std::vector<std::unique_ptr<class Components>> m_components;
+
 		bool m_destroyed = false;
-
-		std::shared_ptr<Model> m_model;
-
-		vec2 m_velocity;
-		float m_damping = 0;
 	};
+
+
+	template<typename T>
+	inline T* Actor::GetComponent() {
+		for (auto & component : m_components) {
+			T* result = dynamic_cast<T*>(component.get());
+			if (result) return result;
+
+		}
+		return nullptr;
+	}
 }
