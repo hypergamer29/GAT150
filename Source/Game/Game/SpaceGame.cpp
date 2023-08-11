@@ -1,23 +1,12 @@
 #include "SpaceGame.h"
 #include "Player.h"
 #include "Enemy.h"
-#include "Framework/Actor.h"
-
-#include "Framework/Emitter.h"
-#include "Renderer/Renderer.h"
-#include "Renderer/ParticleSystem.h"
-
-#include "Framework/Scene.h"
-#include "Framework/Game.h"
-#include "Framework/Resource/RecourceManager.h"
-#include "Framework/Components/SpriteComponent.h"
-#include "Framework/Components/EnginePhysicsComponent.h"
+#include "Framework/Framework.h"
 
 #include "Audio/AudioSystem.h"
 #include "Input/InputSystem.h"
 #include "Renderer/Renderer.h"
-#include "Renderer/Text.h"
-#include "Renderer/ModelManager.h"
+
 
 namespace Loki {
 	bool SpaceGame::Initialize() {
@@ -64,7 +53,7 @@ namespace Loki {
 			if (Loki::g_inputSystem.GetKeyDown(SDL_SCANCODE_SPACE)) {
 				m_state = eState::StartGame;
 			}
-			break;
+		break;
 
 		case SpaceGame::eState::StartGame:
 			m_score = 0;
@@ -72,30 +61,36 @@ namespace Loki {
 			m_score = 0;
 			m_gameTimer = 0;
 			m_state = eState::StartLevel;
-			break;
+		break;
 
 		case SpaceGame::eState::StartLevel: {
 			m_scene->RemoveAll();
 			m_gameTimer = dt;
 
-			// creat player
-			auto player = std::make_unique<Player>(20.0f, Loki::Pi, Loki::Transform{ {400, 300}, 0, 4 });
+			// create player
+			auto player = std::make_unique<Player>(20.0f, Loki::Pi, Loki::Transform{ {400, 300}, 0, 3 });
 			player->m_tag = "Player";
 			player->m_game = this;
 
-			//create components
+			// create components
 			auto renderComponent = std::make_unique<Loki::SpriteComponent>();
 			renderComponent->m_texture = Loki::g_resources.Get<Loki::Texture>("ship.png", Loki::g_renderer);
 			player->AddComponent(std::move(renderComponent));
+
+			// // txt ship render
+			//auto renderComponent = std::make_unique<Loki::ModelRenderComponent>();
+			//renderComponent->m_model = Loki::g_resources.Get<Loki::Model>("star.txt", Loki::g_renderer);
+			//player->AddComponent(std::move(renderComponent));
 
 			auto physicsComponent = std::make_unique<Loki::EnginePhysicsComponent>();
 			physicsComponent->m_damping = 0.9f;
 			player->AddComponent(std::move(physicsComponent));
 
+			player->Initialize();
 			m_scene->Add(std::move(player));
 		}
-			m_state = eState::Game;
-			break;
+		m_state = eState::Game;
+		break;
 
 		case SpaceGame::eState::Game: {
 			m_gameTimer += dt;
@@ -108,14 +103,20 @@ namespace Loki {
 				m_spawnTimer = 0;
 				float n = Loki::randomf(0, 1.0f);
 				if (n <= 0.15) {
-					enemy = std::make_unique<Enemy>(Loki::randomf(175.0f, 250.0f), Loki::Pi / 3.0f, Loki::Transform{ {Loki::randomf(800), Loki::randomf(600)}, Loki::randomf(Loki::twoPi), 3});
+					enemy = std::make_unique<Enemy>(Loki::randomf(175.0f, 250.0f), Loki::Pi / 3.0f, Loki::Transform{ {Loki::randomf(800), Loki::randomf(600)}, Loki::randomf(Loki::twoPi), 2});
 				}
 				else {
-					enemy = std::make_unique<Enemy>(Loki::randomf(75.0f, 150.0f), Loki::Pi, Loki::Transform{ {Loki::randomf(800), Loki::randomf(600)}, Loki::randomf(Loki::twoPi), 3});
+					enemy = std::make_unique<Enemy>(Loki::randomf(75.0f, 150.0f), Loki::Pi, Loki::Transform{ {Loki::randomf(800), Loki::randomf(600)}, Loki::randomf(Loki::twoPi), 2});
 				}
 				//make enemy
 				enemy->m_tag = "Enemy";
 				enemy->m_game = this;
+
+				//create components
+				auto renderComponent = std::make_unique<Loki::SpriteComponent>();
+				renderComponent->m_texture = Loki::g_resources.Get<Loki::Texture>("Enemy.png", Loki::g_renderer);
+				enemy->AddComponent(std::move(renderComponent));
+
 				m_scene->Add(std::move(enemy));
 
 				//create components
@@ -129,28 +130,27 @@ namespace Loki {
 			m_timerText->Create(Loki::g_renderer, "Timer: " + std::to_string((int)m_gameTimer), Loki::Color{1, 1, 1, 1});
 			m_healthText->Create(Loki::g_renderer, "HEALTH: " + std::to_string(Health), Loki::Color{1, 1, 1, 1});
 		}
-
-			break;
+		break;
 
 		case SpaceGame::eState::PlayerDeadStart:
 			m_stateTimer = 3;
 			if (m_lives == 0) m_state = eState::GameOver;
 			else m_state = eState::PlayerDead;
-			break;
+		break;
 
 		case SpaceGame::eState::PlayerDead:
 			m_stateTimer -= dt;
 			if (m_stateTimer <= 0) {
 				m_state = eState::StartLevel;
 			}
-			break;
+		break;
 
 		case SpaceGame::eState::GameOver:
 			m_stateTimer -= dt;
 			if (m_stateTimer <= 0) {
 				m_state = eState::Title;
 			}
-			break;
+		break;
 		default:
 			break;
 		}

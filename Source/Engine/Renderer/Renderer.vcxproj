@@ -176,7 +176,6 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Font.cpp" />
-    <ClCompile Include="ModelManager.cpp" />
     <ClCompile Include="Moedel.cpp" />
     <ClCompile Include="Particle.cpp" />
     <ClCompile Include="ParticleSystem.cpp" />
@@ -186,7 +185,6 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Font.h" />
-    <ClInclude Include="ModelManager.h" />
     <ClInclude Include="Moedel.h" />
     <ClInclude Include="Particle.h" />
     <ClInclude Include="ParticleSystem.h" />

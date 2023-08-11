@@ -1,5 +1,6 @@
 #pragma once
 #include "Framework/Actor.h"
+#include "Framework/Components/PhysicsComponent.h"
 
 class Player : public Loki::Actor {
 public:
@@ -10,6 +11,7 @@ public:
 		m_turnRate{ turnRate }
 	{};
 
+	bool Initialize() override;
 	void Update(float dt) override;
 	void OnCollision(Actor* other) override;
 
@@ -20,4 +22,5 @@ private:
 	float m_turnRate = 0;
 	int m_lifeForce = 20;
 
+	class Loki::PhysicsComponent* m_physicsComponent = nullptr;
 };

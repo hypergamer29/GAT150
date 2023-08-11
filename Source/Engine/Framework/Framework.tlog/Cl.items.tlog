@@ -1,5 +1,7 @@
 C:\Users\Seth Pilgrim\source\repos\GAT150\Source\Engine\Framework\Actor.cpp
+C:\Users\Seth Pilgrim\source\repos\GAT150\Source\Engine\Framework\Components\EnginePhysicsComponent.cpp
+C:\Users\Seth Pilgrim\source\repos\GAT150\Source\Engine\Framework\Components\ModelRenderComponents.cpp
 C:\Users\Seth Pilgrim\source\repos\GAT150\Source\Engine\Framework\Components\SpriteComponent.cpp
 C:\Users\Seth Pilgrim\source\repos\GAT150\Source\Engine\Framework\Emitter.cpp
-C:\Users\Seth Pilgrim\source\repos\GAT150\Source\Engine\Framework\Resource\RecourceManager.cpp
+C:\Users\Seth Pilgrim\source\repos\GAT150\Source\Engine\Framework\Resource\ResourceManager.cpp
 C:\Users\Seth Pilgrim\source\repos\GAT150\Source\Engine\Framework\Scene.cpp

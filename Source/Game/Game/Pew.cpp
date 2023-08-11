@@ -1,4 +1,5 @@
 #include "Pew.h"
+#include "Renderer/Renderer.h"
 
 void Pew::Update(float dt) {
 	Actor::Update(dt);

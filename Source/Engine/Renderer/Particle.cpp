@@ -1,5 +1,5 @@
 #include "Particle.h"
-
+#include "Renderer.h"
 
 namespace Loki {
 	void Particle::Update(float dt) {

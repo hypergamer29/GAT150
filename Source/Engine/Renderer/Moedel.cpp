@@ -1,7 +1,9 @@
 #include "Moedel.h"
+#include "Renderer.h"
 #include <sstream>
 
 namespace Loki {
+
 	bool Model::Load(const std::string& filename) {
 		std::string buffer;
 		Loki::readFile(filename, buffer);
@@ -42,7 +44,18 @@ namespace Loki {
 	}
 
 	void Model::Draw(Renderer& renderer, const Transform& transform) {
-		Draw(renderer, transform.position, transform.rotation, transform.scale);
+
+		if (m_points.empty()) return;
+
+		mat3 mx = transform.GetMatrix();
+
+		renderer.SetColor(Color::ToInt(m_color.r), Color::ToInt(m_color.g), Color::ToInt(m_color.b), Color::ToInt(m_color.a));
+		for (int i = 0; i < m_points.size() - 1; i++) {
+			vec2 p1 = mx * m_points[i];
+			vec2 p2 = mx * m_points[i + 1];
+
+			renderer.DrawLine(p1.x, p1.y, p2.x, p2.y);
+		}
 	}
 	float Model::GetRadius() {
 		if (m_radius != 0) return m_radius;

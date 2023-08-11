@@ -1,7 +1,8 @@
 #pragma once
+#include "FrameWork/Object.h"
 
 namespace Loki {
-	class Components{
+	class Components : public Object{
 	public:
 		virtual void Update(float dt) = 0;
 

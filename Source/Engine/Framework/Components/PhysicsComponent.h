@@ -1,12 +1,12 @@
 #pragma once
 #include "Components.h"
-#include "Core/Vector2.h"
+#include "Core/Math/Vector2.h"
 
 
 namespace Loki {
 	class PhysicsComponent : public Components {
 	public:
-		virtual void ApplyForce(const vec2& force);
+		virtual void ApplyForce(const vec2& force) = 0;
 
 	public:
 		vec2 m_velocity;

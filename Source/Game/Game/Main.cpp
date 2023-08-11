@@ -1,21 +1,13 @@
 #include "Core/Core.h"
 #include "Renderer/Renderer.h"
-#include "Renderer/ModelManager.h"
 #include "Input/InputSystem.h"
 
 #include "Player.h"
 #include "Enemy.h"
 
-#include "Renderer/Font.h"
-#include "Renderer/Text.h"
 #include "Audio/AudioSystem.h"
-#include "Framework/Scene.h"
+#include "Framework/Framework.h"
 #include "SpaceGame.h"
-
-#include "Renderer/ParticleSystem.h"
-#include "Framework/Emitter.h"
-#include "Framework/Resource/RecourceManager.h"
-#include "Renderer/Texture.h"
 
 #include <iostream>
 #include <vector>
