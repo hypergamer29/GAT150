@@ -2,6 +2,7 @@
 #include "Vector2.h"
 #include "Matrix22.h"
 #include "Matrix33.h"
+#include "Core/Json.h"
 
 namespace Loki {
 	class Transform {
@@ -27,5 +28,7 @@ namespace Loki {
 
 			return mx;
 		}
+
+		void Read(const json_t& value);
 	};
 }

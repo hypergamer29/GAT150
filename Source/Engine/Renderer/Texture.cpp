@@ -24,7 +24,7 @@ namespace Loki {
 		SDL_Surface* surface = IMG_Load(filename.c_str());
 
 		if (!surface) {
-			WARNING_LOG
+			WARNING_LOG("No sprite")
 			return false;
 		}
 
@@ -32,7 +32,7 @@ namespace Loki {
 		SDL_FreeSurface(surface);
 		
 		if (!m_texture) {
-			WARNING_LOG
+			WARNING_LOG("no texture was found")
 			return false;
 		}
 

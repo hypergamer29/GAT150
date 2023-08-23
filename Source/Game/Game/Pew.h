@@ -1,19 +1,20 @@
 #pragma once
 #include "Framework/Actor.h"
 
-class Pew : public Loki::Actor {
-public:
-	Pew() = default;
-	Pew(float speed, const Loki::Transform& transform) :
-		Actor{ transform },
-		m_speed{ speed }
-	{ m_lifespan = 2.0f; }
+namespace Loki {
+	class Pew : public Actor {
+	public:
+		CLASS_DECLARATION(Pew)
 
-	void Update(float dt) override;
-	void OnCollision(Actor* other) override;
+		Pew() = default;
+		
+		bool Initialize() override;
 
-private:
-	float m_speed = 0;
-	float m_turnRate = 0;
+		void Update(float dt) override;
+		void OnCollision(Actor* other);
 
-};
+	private:
+		float speed = 0;
+
+	};
+}

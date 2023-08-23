@@ -32,7 +32,7 @@ namespace Loki {
 
 	bool readFile(const std::filesystem::path& path, std::string& buffer) {
 		if (!fileExists(path)) {
-			WARNING_LOG;
+			WARNING_LOG("")
 			return false;
 		}
 

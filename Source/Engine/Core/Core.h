@@ -2,6 +2,7 @@
 
 #include "Logger.h"
 #include "Random.h"
+#include "Json.h"
 #include "FileIO.h"
 #include "Memory.h"
 #include "Time.h"

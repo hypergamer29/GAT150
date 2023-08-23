@@ -27,7 +27,7 @@ namespace Loki {
 	bool Font::Load(const std::string& filename, int fontSize) {
 		m_ttfFont = TTF_OpenFont(filename.c_str(), fontSize);
 		if (!m_ttfFont) {
-			WARNING_LOG;
+			WARNING_LOG("")
 
 			return false;
 		}

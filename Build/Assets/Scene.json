@@ -1,0 +1,43 @@
+{
+	"actors":[
+		{
+			"type": "Actor",
+			"name": "Background",
+			"persistent": true,
+			"transform": {
+				"position": [ 400, 300 ],
+				"scale": 0.46,
+				"rotation": 0
+			},
+			"components": [
+				{
+					"type": "SpriteComponent",
+					"textureName": "spaceBackground4k.jpg"
+				}
+			]
+		},
+		{
+			"type": "Pew",
+			"name": "Pew",
+			"prototype": true,
+			"persistent": false,
+			"tag":  "PlayerBullet",
+			"lifespan": 2,
+			"transform": {
+				"position": [ 400, 300 ],
+				"scale": 1.5,
+				"rotation": 0
+			},
+			"speed": 400,
+			"components": [
+				{
+					"type": "SpriteComponent",
+					"textureName": "pew.png"
+				},
+				{
+					"type": "CircleCollisionComponent"
+				}
+			]
+		}
+	]
+}

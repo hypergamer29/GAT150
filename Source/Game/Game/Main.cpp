@@ -8,12 +8,14 @@
 #include "Audio/AudioSystem.h"
 #include "Framework/Framework.h"
 #include "SpaceGame.h"
+#include "Physics/PhysicsSystem.h"
 
 #include <iostream>
 #include <vector>
 #include <thread>
 #include <array>
 #include <map>
+#include <functional>
 
 
 using namespace std;
@@ -43,12 +45,11 @@ public:
 };
 
 int main(int argc, char* argv[]) {
-	INFO_LOG;
+	INFO_LOG("Initialize Engine")
 
 	Loki::MemoryTracker::Initialize();
 	Loki::seedRandom((unsigned int)time(nullptr));
 	Loki::setFilePath("assets");
-
 
 	Loki::g_renderer.Initialize();
 	Loki::g_renderer.CreateWindow("GAT150", 800, 600);
@@ -57,6 +58,8 @@ int main(int argc, char* argv[]) {
 
 	Loki::g_audioSystem.Initialize();
 	Loki::g_audioSystem.AddAudio("Pew", "Pew.wav");
+
+	Loki::PhysicsSystem::Instance().Initialize();
 
 	Loki::SpaceGame game;
 	game.Initialize();
@@ -91,6 +94,8 @@ int main(int argc, char* argv[]) {
 		Loki::g_renderer.BeginFrame();
 
 		// draw the ~stars~ (background)
+		game.Draw(Loki::g_renderer);
+
 		for (auto& star : stars) {
 			star.Update(Loki::g_renderer.GetWidth(), Loki::g_renderer.GetHeight());
 			Loki::g_renderer.SetColor(255, 255, 255, 255);
@@ -98,7 +103,6 @@ int main(int argc, char* argv[]) {
 		}
 
 		//Draw game
-		game.Draw(Loki::g_renderer);
 		Loki::g_particleSystem.Draw(Loki::g_renderer);
 
 		Loki::g_renderer.EndFrame();

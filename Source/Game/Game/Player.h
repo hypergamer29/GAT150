@@ -16,7 +16,7 @@ public:
 	void OnCollision(Actor* other) override;
 
 	int GetLifeForce() { return m_lifeForce; }
-
+	void SetLifeForce(int lifeForce) { m_lifeForce = lifeForce; }
 private:
 	float m_speed = 0;
 	float m_turnRate = 0;

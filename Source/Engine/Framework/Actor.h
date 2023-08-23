@@ -8,10 +8,13 @@
 namespace Loki {
 	class Actor : public Object {
 	public:
+		CLASS_DECLARATION(Actor)
+
 		Actor() = default;
 		Actor(const Loki::Transform& transform) :
-			m_transform{ transform }
+			transform{ transform }
 		{}
+		Actor(const Actor& other);
 
 		virtual bool Initialize() override;
 		virtual void OnDestroy() override;
@@ -30,15 +33,16 @@ namespace Loki {
 		friend class Scene;
 		friend class model;
 
-		Transform m_transform;
-		std::string m_tag;
-		
-		float m_lifespan = -1.0f;
-
+		Transform transform;
+		std::string tag;
 		class Game* m_game = nullptr;
+		
+		float lifespan = -1.0f;
+		bool persistent = false;
+		bool prototype = false;
 
 	protected:
-		std::vector<std::unique_ptr<class Components>> m_components;
+		std::vector<std::unique_ptr<class Components>> components;
 
 		bool m_destroyed = false;
 	};
@@ -46,7 +50,7 @@ namespace Loki {
 
 	template<typename T>
 	inline T* Actor::GetComponent() {
-		for (auto & component : m_components) {
+		for (auto & component : components) {
 			T* result = dynamic_cast<T*>(component.get());
 			if (result) return result;
 

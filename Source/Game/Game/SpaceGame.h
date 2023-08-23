@@ -1,9 +1,10 @@
 #pragma once
 #include "Framework/Game.h"
+#include "Framework/Event/EventManager.h"
 #include "Renderer/Text.h"
 
 namespace Loki {
-    class SpaceGame : public Loki::Game {
+    class SpaceGame : public Loki::Game, Loki::IEventListener {
     public:
 
         enum class eState {
@@ -26,6 +27,8 @@ namespace Loki {
         virtual void Draw(Loki::Renderer& renderer) override;
 
         void SetState(eState state) { m_state = state; }
+        void OnAddPoints(const Loki::Event& event);
+        void OnPlayerDead(const Loki::Event& event);
 
     private:
         eState m_state = eState::Title;

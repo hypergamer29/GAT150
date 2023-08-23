@@ -1,19 +1,24 @@
 #include "Player.h"
 #include "Pew.h"
-#include "Framework/Scene.h"
+#include "Framework/Framework.h"
 #include "Input/InputSystem.h"
 #include "Audio/AudioSystem.h"
-#include "Framework/Components/SpriteComponent.h"
-#include "Framework/Resource/ResourceManager.h"
 #include "Renderer/Texture.h"
 #include "Renderer/Renderer.h"
-#include "Framework/Components/PhysicsComponent.h"
 
 bool Player::Initialize() {
 	Actor::Initialize();
 
 	// cache off
 	m_physicsComponent = GetComponent<Loki::PhysicsComponent>();
+	auto collisionComponent = GetComponent<Loki::CollisionComponent>();
+	if (collisionComponent) {
+		auto renderComponent = GetComponent<Loki::RenderComponent>();
+		if (renderComponent) {
+			float scale = transform.scale;
+			collisionComponent->m_radius = renderComponent->GetRadius() * scale;
+		}
+	}
 
 	return true;
 }
@@ -25,46 +30,30 @@ void Player::Update(float dt) {
 	float rotate = 0;
 	if (Loki::g_inputSystem.GetKeyDown(SDL_SCANCODE_A)) rotate = -1;
 	if (Loki::g_inputSystem.GetKeyDown(SDL_SCANCODE_D)) rotate = 1;
-	m_transform.rotation += rotate * m_turnRate * Loki::g_time.GetDeltaTime();
+	transform.rotation += rotate * m_turnRate * Loki::g_time.GetDeltaTime();
 
 	//Moving
 	float thrust = 0;
 	if (Loki::g_inputSystem.GetKeyDown(SDL_SCANCODE_W)) thrust = 1;
 
-	Loki::vec2 forward = Loki::vec2{ 0, -1 }.Rotate(m_transform.rotation);
+	Loki::vec2 forward = Loki::vec2{ 0, -1 }.Rotate(transform.rotation);
 	
 	m_physicsComponent->ApplyForce(forward * m_speed * thrust);
 	
 	//m_transform.position += forward * m_speed * thrust * Loki::g_time.GetDeltaTime();
 	
 	//Loop round the screen
-	m_transform.position.x = Loki::Wrap(m_transform.position.x, (float)Loki::g_renderer.GetWidth());
-	m_transform.position.y = Loki::Wrap(m_transform.position.y, (float)Loki::g_renderer.GetHeight());
+	transform.position.x = Loki::Wrap(transform.position.x, (float)Loki::g_renderer.GetWidth());
+	transform.position.y = Loki::Wrap(transform.position.y, (float)Loki::g_renderer.GetHeight());
 
 	//Fire Pew
 	if (Loki::g_inputSystem.GetKeyDown(SDL_SCANCODE_SPACE) && !Loki::g_inputSystem.GetPreviousKeyDown(SDL_SCANCODE_SPACE)) {
-
-		//create pew
-		Loki::Transform transform1(m_transform.position, m_transform.rotation, 1.5f);
-		std::unique_ptr<Pew> pew = std::make_unique<Pew>(400.0f, transform1);
-		pew->m_tag = "PlayerBullet";
-
-		std::unique_ptr<Loki::SpriteComponent> component = std::make_unique<Loki::SpriteComponent>();
-		component->m_texture = Loki::g_resources.Get<Loki::Texture>("pew.png", Loki::g_renderer);
-		pew->AddComponent(std::move(component));
-		
+		auto pew = INSTANTIATE(Pew, "Pew");
+		pew->transform = { transform.position, transform.rotation + Loki::DegToRad(10.0f), 1.5f};
+		pew->Initialize();
 		m_scene->Add(std::move(pew));
- 		Loki::g_audioSystem.PlayOneShot("Pew");
+
 		
-		Loki::Transform transform2(m_transform.position, m_transform.rotation - Loki::DegToRad(10.0f), 1.5f);
-		pew = std::make_unique<Pew>(400.0f, transform2);
-
-		std::unique_ptr<Loki::SpriteComponent> component2 = std::make_unique<Loki::SpriteComponent>();
-		component2->m_texture = Loki::g_resources.Get<Loki::Texture>("pew.png", Loki::g_renderer);
-		pew->AddComponent(std::move(component2));
-
-		pew->m_tag = "PlayerBullet";
-		m_scene->Add(std::move(pew));
 	}
 
 	if (Loki::g_inputSystem.GetKeyDown(SDL_SCANCODE_T)) Loki::g_time.SetTImeScale(0.5f);
@@ -72,10 +61,29 @@ void Player::Update(float dt) {
 }
 
 void Player::OnCollision(Actor* other) {
-	if (other->m_tag == "EnemyBullet") {
-		int life = GetLifeForce();
-		life -= 5;
-		if (life <= 0) m_destroyed = true;
+	if (other->tag == "EnemyBullet" || other->tag == "Enemy") {
+		m_destroyed = true;
+		Loki::EventManager::Instance().DispatchEvent("OnPlayerDead", 0);
+
+
+		//create explostion
+		Loki::EmitterData data;
+		data.burst = true;
+		data.burstCount = 100;
+		data.spawnRate = 200;
+		data.angle = 0;
+		data.angleRange = Loki::Pi;
+		data.lifetimeMin = 0.1f;
+		data.lifetimeMax = 0.5f;
+		data.speedMin = 50;
+		data.speedMax = 250;
+		data.damping = 0.5f;
+		data.color = Loki::Color{ 1, 0, 0, 1 };
+
+		auto emitter = std::make_unique<Loki::Emitter>(transform, data);
+
+		emitter->lifespan = 0.5f;
+		m_scene->Add(std::move(emitter));
 	}
 
 }

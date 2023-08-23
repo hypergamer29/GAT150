@@ -11,6 +11,9 @@
     <Filter Include="Source\Components">
       <UniqueIdentifier>{a7a2a5a9-4936-4deb-a2b4-98f4acc50fcd}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source\Event">
+      <UniqueIdentifier>{f0d5c521-e240-467c-8f01-d8ffa468ac53}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Actor.cpp">
@@ -22,9 +25,6 @@
     <ClCompile Include="Emitter.cpp">
       <Filter>Source</Filter>
     </ClCompile>
-    <ClCompile Include="Resource\ResourceManager.cpp">
-      <Filter>Source\Resource</Filter>
-    </ClCompile>
     <ClCompile Include="Components\SpriteComponent.cpp">
       <Filter>Source\Components</Filter>
     </ClCompile>
@@ -35,7 +35,13 @@
       <Filter>Source\Components</Filter>
     </ClCompile>
     <ClCompile Include="Components\CircleCollisionComponent.cpp">
+      <Filter>Source\Components</Filter>
+    </ClCompile>
+    <ClCompile Include="Object.cpp">
       <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="Event\EventManager.cpp">
+      <Filter>Source\Event</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -86,6 +92,18 @@
     </ClInclude>
     <ClInclude Include="Components\CircleCollisionComponent.h">
       <Filter>Source\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="Singleton.h">
+      <Filter>Source</Filter>
+    </ClInclude>
+    <ClInclude Include="Factory.h">
+      <Filter>Source</Filter>
+    </ClInclude>
+    <ClInclude Include="Event\Event.h">
+      <Filter>Source\Event</Filter>
+    </ClInclude>
+    <ClInclude Include="Event\EventManager.h">
+      <Filter>Source\Event</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
